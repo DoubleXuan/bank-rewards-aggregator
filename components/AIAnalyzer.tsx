@@ -14,7 +14,7 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
   const [strategy, setStrategy] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-  
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -60,9 +60,9 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' }, 
-        audio: false 
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+        audio: false
       });
       streamRef.current = stream;
       if (videoRef.current) {
@@ -132,9 +132,9 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
             </div>
             <h3 className="font-bold text-slate-900 text-lg mb-2">获取活动信息</h3>
             <p className="text-sm text-slate-500 mb-6">上传截图或拍照，AI 自动识别银行福利</p>
-            
+
             <div className="flex flex-col sm:flex-row justify-center gap-3">
-              <button 
+              <button
                 onClick={startCamera}
                 disabled={analyzing}
                 className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 disabled:opacity-50"
@@ -156,14 +156,14 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
           </>
         ) : (
           <div className="relative overflow-hidden rounded-xl bg-black">
-            <video 
-              ref={videoRef} 
-              autoPlay 
-              playsInline 
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
               className="w-full h-64 object-cover"
             />
             <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
-              <button 
+              <button
                 onClick={stopCamera}
                 className="p-3 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-white/30 transition-colors"
               >
@@ -171,7 +171,7 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <button 
+              <button
                 onClick={takePhoto}
                 className="w-14 h-14 bg-white rounded-full border-4 border-white/50 shadow-lg flex items-center justify-center active:scale-90 transition-transform"
               >
@@ -180,7 +180,7 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
             </div>
           </div>
         )}
-        
+
         <canvas ref={canvasRef} className="hidden" />
 
         {previewImage && !isCameraOpen && (
@@ -204,9 +204,9 @@ const AIAnalyzer: React.FC<AIAnalyzerProps> = ({ onAddOffer, userCards, offers }
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
             <h3 className="font-bold text-lg">AI 智能分析攻略</h3>
           </div>
-          <p className="text-slate-400 text-sm mb-6">根据您绑定的 {userCards.length} 张银行卡，为您规划今日最优路径</p>
-          
-          <button 
+          <p className="text-slate-400 text-sm mb-6">根据您关注的 {Array.from(new Set(userCards.map(c => c.bank))).join('、')}，为您规划今日最优路径</p>
+
+          <button
             onClick={generateStrategy}
             className="w-full py-3 bg-white text-slate-900 rounded-xl font-bold hover:bg-slate-100 transition-colors disabled:opacity-50"
             disabled={analyzing}

@@ -39,7 +39,7 @@ const Dashboard: React.FC<{ offers: BankOffer[], userCards: UserCard[] }> = ({ o
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white/10 rounded-xl p-3 border border-white/10">
-              <p className="text-[10px] opacity-80 mb-1 uppercase font-bold">待领(匹配卡片)</p>
+              <p className="text-[10px] opacity-80 mb-1 uppercase font-bold">待领(匹配银行)</p>
               <p className="text-xl font-semibold">¥{matchedValue}</p>
             </div>
             <div className="bg-white/10 rounded-xl p-3 border border-white/10">
@@ -79,7 +79,7 @@ const Dashboard: React.FC<{ offers: BankOffer[], userCards: UserCard[] }> = ({ o
       <section className="space-y-4">
         <div className="flex items-center justify-between px-1">
           <h3 className="font-bold text-slate-900">为您推荐</h3>
-          <span className="text-[10px] text-slate-400 font-bold uppercase">优先显示已持卡</span>
+          <span className="text-[10px] text-slate-400 font-bold uppercase">优先显示已关注</span>
         </div>
         <div className="space-y-3">
           {[...matchedOffers, ...activeOffers.filter(o => !userBankNames.has(o.bank))].slice(0, 4).map(offer => {
@@ -94,7 +94,7 @@ const Dashboard: React.FC<{ offers: BankOffer[], userCards: UserCard[] }> = ({ o
                     <h4 className="text-sm font-semibold text-slate-900 line-clamp-1">{offer.title}</h4>
                     <div className="flex items-center space-x-2">
                       <p className="text-[10px] text-slate-500">{offer.bank}</p>
-                      {isMatched && <span className="text-[9px] bg-blue-100 text-blue-600 px-1 rounded font-bold">已持卡</span>}
+                      {isMatched && <span className="text-[9px] bg-blue-100 text-blue-600 px-1 rounded font-bold">已关注</span>}
                     </div>
                   </div>
                 </div>

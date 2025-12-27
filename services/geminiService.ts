@@ -116,7 +116,7 @@ export const fetchLatestBankOffers = async () => {
 export const getSmartOptimizationStrategy = async (userCards: string[], activeOffers: string) => {
   const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-  const prompt = `Based on the user's cards: [${userCards.join(', ')}] and the following active bank promotions: ${activeOffers},
+  const prompt = `Based on the user's followed banks: [${userCards.join(', ')}] and the following active bank promotions: ${activeOffers},
     provide a priority list of which activities to do first to maximize returns with minimum effort. 
     Focus on "薅羊毛" (high reward/effort ratio). Keep the tone encouraging and professional in Chinese.`;
 

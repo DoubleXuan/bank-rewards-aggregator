@@ -100,7 +100,7 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
       <div className="space-y-4">
         {filteredOffers.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-200">
-            <p className="text-slate-400 text-sm">暂无匹配活动，尝试同步全网或添加更多银行卡</p>
+            <p className="text-slate-400 text-sm">暂无匹配活动，尝试同步全网或关注更多银行</p>
           </div>
         )}
         {filteredOffers.map(offer => {
@@ -116,7 +116,7 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
                     {offer.bank}
                   </div>
                   {isMatched && (
-                    <span className="px-2 py-0.5 bg-blue-600 text-white rounded text-[9px] font-bold">已持卡</span>
+                    <span className="px-2 py-0.5 bg-blue-600 text-white rounded text-[9px] font-bold">已关注</span>
                   )}
                   {(offer as any).isNew && (
                     <span className="text-[10px] text-orange-500 font-bold animate-pulse">NEW</span>
