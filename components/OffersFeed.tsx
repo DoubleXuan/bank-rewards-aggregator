@@ -40,7 +40,8 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
       onSync(formatted);
       setLastUpdated(new Date().toLocaleTimeString());
     } catch (e) {
-      alert('同步失败，请稍后再试');
+      console.error(e);
+      alert(`同步失败: ${e instanceof Error ? e.message : JSON.stringify(e)}`);
     } finally {
       setSyncing(false);
     }
@@ -53,7 +54,7 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
           <h2 className="text-sm font-bold text-slate-900">实时福利库</h2>
           <p className="text-[10px] text-slate-400">上次更新: {lastUpdated}</p>
         </div>
-        <button 
+        <button
           onClick={handleSync}
           disabled={syncing}
           className={`flex items-center space-x-1 px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 text-xs font-bold transition-all active:scale-95 ${syncing ? 'opacity-50' : ''}`}
@@ -68,11 +69,10 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
       <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
         <button
           onClick={() => setFilter('matched')}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center space-x-1 ${
-            filter === 'matched' 
-              ? 'bg-orange-500 text-white shadow-md' 
-              : 'bg-white text-slate-600 border border-slate-200'
-          }`}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center space-x-1 ${filter === 'matched'
+            ? 'bg-orange-500 text-white shadow-md'
+            : 'bg-white text-slate-600 border border-slate-200'
+            }`}
         >
           <span>⭐ 我的匹配</span>
         </button>
@@ -80,11 +80,10 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
           <button
             key={cat}
             onClick={() => setFilter(cat as any)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-              filter === cat 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'bg-white text-slate-600 border border-slate-200'
-            }`}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${filter === cat
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-white text-slate-600 border border-slate-200'
+              }`}
           >
             {cat === 'all' ? '全部' : cat === 'Lottery' ? '抽奖' : cat === 'Cashback' ? '返现' : '券码'}
           </button>
@@ -100,8 +99,8 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
         {filteredOffers.map(offer => {
           const isMatched = userBankNames.has(offer.bank);
           return (
-            <div 
-              key={offer.id} 
+            <div
+              key={offer.id}
               className={`bg-white rounded-2xl p-5 border shadow-sm transition-all group ${offer.status === 'claimed' ? 'opacity-60' : ''} ${isMatched ? 'border-blue-100 ring-1 ring-blue-50' : 'border-slate-100'}`}
             >
               <div className="flex justify-between items-start mb-3">
@@ -118,16 +117,16 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
                 </div>
                 <span className="text-xs text-slate-400 font-medium">至 {offer.expiryDate}</span>
               </div>
-              
+
               <h3 className="font-bold text-slate-900 text-lg mb-1 group-hover:text-blue-600 transition-colors">{offer.title}</h3>
               <p className="text-sm text-slate-600 mb-4 line-clamp-2">{offer.description}</p>
-              
+
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-50">
                 <div className="flex flex-col">
                   <span className="text-[10px] text-slate-400 uppercase font-bold">预计价值</span>
                   <span className="text-xl font-bold text-blue-600">¥{offer.estimatedValue}</span>
                 </div>
-                
+
                 <button
                   onClick={() => setSelectedOffer(offer)}
                   className="px-6 py-2 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-lg shadow-blue-100 active:scale-95 transition-transform"
@@ -168,19 +167,28 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
                   </div>
                 ))}
               </div>
-              
+
               <div className="mt-8 flex flex-col space-y-3">
-                <button 
+                <button
                   onClick={() => {
-                    onClaim(selectedOffer.id);
-                    setSelectedOffer(null);
-                    window.location.href = `bankapp://activity?id=${selectedOffer.id}`;
+                    const textToCopy = `${selectedOffer.bank} ${selectedOffer.title}`;
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                      alert(`已复制活动口令：${textToCopy}\n请打开手机银行App粘贴搜索或直接查找该活动。`);
+                      // 尝试通用跳转或让用户自己打开
+                      onClaim(selectedOffer.id);
+                      setSelectedOffer(null);
+                    }).catch(() => {
+                      alert('复制失败，请手动查找活动');
+                    });
                   }}
-                  className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-100"
+                  className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-100 flex items-center justify-center space-x-2"
                 >
-                  去对应的 App 参加
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                  <span>复制口令并去 App 参加</span>
                 </button>
-                <button 
+                <button
                   onClick={() => setSelectedOffer(null)}
                   className="w-full py-3 text-slate-400 text-sm font-medium"
                 >

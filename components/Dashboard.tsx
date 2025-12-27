@@ -3,24 +3,29 @@ import React from 'react';
 import { BankOffer, RewardHistory, UserCard } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-const MOCK_HISTORY: RewardHistory[] = [
-  { date: '11/01', value: 12 },
-  { date: '11/02', value: 5 },
-  { date: '11/03', value: 25 },
-  { date: '11/04', value: 8 },
-  { date: '11/05', value: 15 },
-  { date: '11/06', value: 30 },
-  { date: '11/07', value: 10 },
-];
+const generateMockHistory = () => {
+  const data = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    data.push({
+      date: `${d.getMonth() + 1}/${d.getDate()}`,
+      value: Math.floor(Math.random() * 30) + 5
+    });
+  }
+  return data;
+};
+
+const MOCK_HISTORY: RewardHistory[] = generateMockHistory();
 
 const Dashboard: React.FC<{ offers: BankOffer[], userCards: UserCard[] }> = ({ offers, userCards }) => {
   const userBankNames = new Set(userCards.map(c => c.bank));
   const activeOffers = offers.filter(o => o.status === 'active');
-  
+
   // 仅计算用户持有的银行卡的福利价值
   const matchedOffers = activeOffers.filter(o => userBankNames.has(o.bank));
   const matchedValue = matchedOffers.reduce((acc, curr) => acc + curr.estimatedValue, 0);
-  
+
   const claimedCount = offers.filter(o => o.status === 'claimed').length;
 
   return (
@@ -57,7 +62,7 @@ const Dashboard: React.FC<{ offers: BankOffer[], userCards: UserCard[] }> = ({ o
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} />
               <YAxis hide />
-              <Tooltip 
+              <Tooltip
                 cursor={{ fill: '#f8fafc' }}
                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
               />

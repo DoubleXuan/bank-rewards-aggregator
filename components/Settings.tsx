@@ -9,18 +9,20 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ userCards, setUserCards }) => {
   const [newCardBank, setNewCardBank] = useState<BankName>(BankName.ICBC);
-  const [newCardLastFour, setNewCardLastFour] = useState('');
 
   const addCard = () => {
-    if (newCardLastFour.length !== 4) return alert('请输入卡号后四位');
+    // 检查是否已经添加过该银行
+    if (userCards.some(c => c.bank === newCardBank)) {
+      alert('您已添加过该银行，无需重复添加');
+      return;
+    }
+
     const newCard: UserCard = {
       id: Date.now().toString(),
       bank: newCardBank,
-      lastFour: newCardLastFour,
-      nickname: `${newCardBank}新卡`
+      type: 'Credit' // 默认为信用卡，后续可扩展
     };
     setUserCards([...userCards, newCard]);
-    setNewCardLastFour('');
   };
 
   const removeCard = (id: string) => {
@@ -37,7 +39,7 @@ const Settings: React.FC<SettingsProps> = ({ userCards, setUserCards }) => {
           安装到手机桌面
         </h3>
         <p className="text-xs text-blue-100 mb-4 leading-relaxed">
-          iOS: 点击 Safari 底部「分享」图标，选择「添加到主屏幕」。<br/>
+          iOS: 点击 Safari 底部「分享」图标，选择「添加到主屏幕」。<br />
           Android: 点击 Chrome 菜单「安装应用」。
         </p>
         <div className="bg-white/10 p-3 rounded-xl border border-white/20 text-[10px]">
@@ -46,7 +48,8 @@ const Settings: React.FC<SettingsProps> = ({ userCards, setUserCards }) => {
       </div>
 
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-        <h3 className="font-bold text-slate-900 mb-4">我的银行卡 ({userCards.length})</h3>
+        <h3 className="font-bold text-slate-900 mb-4">我的关注银行 ({userCards.length})</h3>
+        <p className="text-xs text-slate-400 mb-4">仅需添加您关注的银行，无需输入卡号，保护隐私。</p>
         <div className="space-y-3">
           {userCards.map(card => (
             <div key={card.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
@@ -55,8 +58,8 @@ const Settings: React.FC<SettingsProps> = ({ userCards, setUserCards }) => {
                   {card.bank.substring(0, 2)}
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold">{card.nickname}</h4>
-                  <p className="text-xs text-slate-500">{card.bank} (**** {card.lastFour})</p>
+                  <h4 className="text-sm font-semibold">{card.bank}</h4>
+                  <p className="text-xs text-slate-500">已关注活动信息</p>
                 </div>
               </div>
               <button onClick={() => removeCard(card.id)} className="text-slate-400 hover:text-red-500 transition-colors">
@@ -69,27 +72,19 @@ const Settings: React.FC<SettingsProps> = ({ userCards, setUserCards }) => {
         </div>
 
         <div className="mt-6 pt-6 border-t border-slate-100">
-          <h4 className="text-sm font-bold text-slate-900 mb-4">添加新卡片</h4>
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <select 
+          <h4 className="text-sm font-bold text-slate-900 mb-4">添加关注银行</h4>
+          <div className="flex gap-3 mb-4">
+            <select
               value={newCardBank}
               onChange={(e) => setNewCardBank(e.target.value as BankName)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {Object.values(BankName).map(bank => (
                 <option key={bank} value={bank}>{bank}</option>
               ))}
             </select>
-            <input 
-              type="text" 
-              maxLength={4}
-              placeholder="后四位 (如 8888)"
-              value={newCardLastFour}
-              onChange={(e) => setNewCardLastFour(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
           </div>
-          <button 
+          <button
             onClick={addCard}
             className="w-full py-2 bg-slate-100 text-slate-900 font-bold rounded-lg hover:bg-slate-200 transition-colors"
           >
@@ -104,18 +99,18 @@ const Settings: React.FC<SettingsProps> = ({ userCards, setUserCards }) => {
           <div className="flex items-center justify-between">
             <span className="text-sm">自动提醒每日签到</span>
             <div className="w-10 h-5 bg-blue-600 rounded-full relative">
-               <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+              <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm">深色模式</span>
             <div className="w-10 h-5 bg-slate-200 rounded-full relative">
-               <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+              <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <p className="text-[10px] text-slate-400 text-center uppercase tracking-widest pb-8">
         LootMaster AI v1.0.5 • PWA Enabled
       </p>

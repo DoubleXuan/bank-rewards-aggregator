@@ -1,9 +1,8 @@
-
 {
   "name": "薅羊毛大师 AI",
   "short_name": "薅羊毛大师",
   "description": "智能银行福利追踪与自动优化助手",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",

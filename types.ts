@@ -7,6 +7,23 @@ export enum BankName {
   CMB = '招商银行',
   COMM = '交通银行',
   PSBC = '邮储银行',
+  CITIC = '中信银行',
+  CEB = '光大银行',
+  HXB = '华夏银行',
+  CGB = '广发银行',
+  PAB = '平安银行',
+  SPDB = '浦发银行',
+  CIB = '兴业银行',
+  CMBC = '民生银行',
+  HFB = '恒丰银行',
+  CZB = '浙商银行',
+  CBHB = '渤海银行',
+  BOB = '北京银行',
+  SHB = '上海银行',
+  JSB = '江苏银行',
+  NBCB = '宁波银行',
+  NJCB = '南京银行',
+  HSBC = '汇丰银行',
 }
 
 export interface BankOffer {
@@ -24,8 +41,7 @@ export interface BankOffer {
 export interface UserCard {
   id: string;
   bank: BankName;
-  lastFour: string;
-  nickname: string;
+  type?: 'Credit' | 'Debit';
 }
 
 export interface RewardHistory {
