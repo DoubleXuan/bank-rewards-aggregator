@@ -10,7 +10,7 @@ export const MOCK_OFFERS: BankOffer[] = [
     description: '每日登录抽最高50元微信立减金。',
     category: 'Lottery',
     status: 'active',
-    expiryDate: '2024-12-31',
+    expiryDate: '2026-06-30',
     estimatedValue: 5,
     steps: ['登录工行App', '搜索“任务中心”', '完成签到', '点击大转盘']
   },
@@ -21,7 +21,7 @@ export const MOCK_OFFERS: BankOffer[] = [
     description: '通过数字人民币消费返现，最高领取88元。',
     category: 'Cashback',
     status: 'active',
-    expiryDate: '2024-11-20',
+    expiryDate: '2026-05-20',
     estimatedValue: 12,
     steps: ['打开建行App', '点击“惠省钱”', '完成支付任务', '领取立减金']
   },
@@ -32,7 +32,7 @@ export const MOCK_OFFERS: BankOffer[] = [
     description: '9积分兑换视频会员或美食券。',
     category: 'Coupon',
     status: 'active',
-    expiryDate: '2024-12-15',
+    expiryDate: '2026-12-15',
     estimatedValue: 15,
     steps: ['掌上生活App', '点击“精选”', '搜索“9分”', '立即兑换']
   }

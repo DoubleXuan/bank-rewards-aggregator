@@ -83,9 +83,18 @@ export const fetchLatestBankOffers = async () => {
     }
   });
 
-  const prompt = `当前日期是 ${currentDate}。请列出目前中国各大主流银行（工行、建行、招行、农行、中行、交行、平安、兴业等）正在进行的、真实有效的“薅羊毛”活动。
-    重点关注：手机银行App签到抽奖、微信立减金领取、数字人民币红包、消费达标返现等。
-    请列出至少6个最新活动，确保日期覆盖当前月份。不要杜撰，尽量准确。`;
+  const prompt = `当前日期是 ${currentDate}。作为一位资深的“中国信用卡羊毛党”，请利用您的联网搜索能力，挖掘各大银行真实的、最新的优惠活动。
+    
+    重点搜索来源：
+    1. 各大银行官方公告/App。
+    2. 社交媒体讨论（如小红书、微博、什么值得买）中的热门羊毛攻略。
+    
+    筛选标准：
+    - 必须真实有效，**过期活动绝对不要**。
+    - 截止日期必须晚于今日 (${currentDate})。
+    - 重点关注：Sign-in bonus (签到), Red Packet (红包), Cashback (返现)。
+    
+    请列出至少6个活动，格式严格遵守 JSON Schema。`;
 
   try {
     const result = await model.generateContent(prompt);

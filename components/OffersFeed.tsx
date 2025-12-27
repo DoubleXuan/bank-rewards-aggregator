@@ -23,7 +23,14 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
   const filteredOffers = offers.filter(o => {
     const categoryMatch = filter === 'all' || filter === 'matched' || o.category === filter;
     const cardMatch = filter === 'matched' ? userBankNames.has(o.bank) : true;
-    return categoryMatch && cardMatch && o.status !== 'expired';
+
+    // Check expiry
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiry = new Date(o.expiryDate);
+    const isExpired = expiry < today;
+
+    return categoryMatch && cardMatch && !isExpired && o.status !== 'expired';
   });
 
   const handleSync = async () => {
