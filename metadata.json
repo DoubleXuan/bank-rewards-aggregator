@@ -1,0 +1,7 @@
+{
+  "name": "LootMaster AI - Bank Rewards Aggregator",
+  "description": "A smart financial assistant that helps users discover, track, and optimize rewards, points, and lottery benefits from various banks using AI analysis.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
