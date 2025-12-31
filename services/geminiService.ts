@@ -72,12 +72,13 @@ export const fetchLatestBankOffers = async () => {
           properties: {
             bank: { type: SchemaType.STRING },
             title: { type: SchemaType.STRING },
+            searchKeyword: { type: SchemaType.STRING },
             category: { type: SchemaType.STRING },
             steps: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
             expiryDate: { type: SchemaType.STRING },
             estimatedValue: { type: SchemaType.NUMBER }
           },
-          required: ["bank", "title", "category", "steps", "expiryDate", "estimatedValue"]
+          required: ["bank", "title", "searchKeyword", "category", "steps", "expiryDate", "estimatedValue"]
         }
       }
     }
@@ -99,6 +100,7 @@ export const fetchLatestBankOffers = async () => {
     【筛选标准】
     - 必须真实有效，**绝对不要过期活动** (截止日期需晚于 ${currentDate})。
     - 确保包含具体的参与路径（如“搜索xxx”）。
+    - **重要**：提供一个准确的 'searchKeyword'（搜索暗号），例如 "惠省钱"，"i豆"，"云游记"。这个词必须是用户在银行App里**直接搜索就能找到活动**的最短关键词。
     - 优先按照上面的“核心关键词”进行匹配，如果没有则搜索其他高价值活动。
     
     请列出至少 8 个精选活动，覆盖不同银行，格式严格遵守 JSON Schema。`;

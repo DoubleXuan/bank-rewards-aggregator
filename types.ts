@@ -30,6 +30,7 @@ export interface BankOffer {
   id: string;
   bank: BankName;
   title: string;
+  searchKeyword?: string;
   description: string;
   category: 'Lottery' | 'Points' | 'Cashback' | 'Coupon';
   status: 'active' | 'expired' | 'claimed';

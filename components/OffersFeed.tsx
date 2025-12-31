@@ -178,9 +178,9 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
               <div className="mt-8 flex flex-col space-y-3">
                 <button
                   onClick={() => {
-                    const textToCopy = `${selectedOffer.bank} ${selectedOffer.title}`;
+                    const textToCopy = selectedOffer.searchKeyword || `${selectedOffer.bank} ${selectedOffer.title}`;
                     navigator.clipboard.writeText(textToCopy).then(() => {
-                      alert(`已复制活动口令：${textToCopy}\n请打开手机银行App粘贴搜索或直接查找该活动。`);
+                      alert(`已复制搜索词：【${textToCopy}】\n请打开手机银行App，粘贴到顶部搜索框直达活动。`);
                       // 尝试通用跳转或让用户自己打开
                       onClaim(selectedOffer.id);
                       setSelectedOffer(null);
@@ -193,7 +193,10 @@ const OffersFeed: React.FC<OffersFeedProps> = ({ offers, userCards, onClaim, onS
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                   </svg>
-                  <span>复制口令并去 App 参加</span>
+                  <div className="flex flex-col items-start leading-tight">
+                    <span>复制搜索词并去 App</span>
+                    <span className="text-[10px] opacity-80 font-normal">搜索口令: {selectedOffer.searchKeyword || selectedOffer.title}</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => setSelectedOffer(null)}
